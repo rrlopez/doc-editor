@@ -45,7 +45,7 @@ A lightweight collaborative document editor built as a full stack assessment pro
 
 - Node.js 20+
 - pnpm 9+
-- Docker (recommended for PostgreSQL)
+- A running PostgreSQL instance (Docker is the easiest way — see step 3)
 
 ### 1. Clone and install
 
@@ -63,20 +63,24 @@ cp .env.example .env
 
 Edit `.env` with your database credentials. See [Environment Variables](#environment-variables) below.
 
-### 3. Start PostgreSQL (Docker)
+### 3. Start PostgreSQL
+
+The quickest way is Docker:
 
 ```bash
 docker compose up -d db
 ```
 
-Or point `POSTGRES_*` variables at an existing PostgreSQL instance.
+Or point the `POSTGRES_*` variables in `.env` at any existing PostgreSQL instance. No other Docker setup is required to run the app locally.
 
-### 4. Push schema and generate client
+### 4. Push schema and generate Prisma client
 
 ```bash
-pnpm run db:push
 pnpm run generate
+pnpm run db:push
 ```
+
+> **Note:** Run `generate` before `db:push` — it compiles the Prisma client that the push script depends on.
 
 ### 5. Seed test users
 
@@ -84,7 +88,7 @@ pnpm run generate
 pnpm run seed
 ```
 
-When prompted, enter `y` to confirm. This seeds the `examples` folder by default.
+When prompted, enter `y` to confirm. This seeds from the `examples` folder by default.
 
 ### 6. Run the dev server
 
@@ -98,29 +102,22 @@ App is available at `http://localhost:3000`.
 
 ## Environment Variables
 
-| Variable | Description | Example |
+| Variable | Description | Local value |
 |---|---|---|
-| `CANONICAL_URL` | Public-facing base URL | `http://localhost:3200` |
-| `BETTER_AUTH_URL` | Auth base URL (same as canonical) | `http://localhost:3200` |
-| `BETTER_AUTH_INTERNAL_URL` | Internal server-to-server auth URL | `http://127.0.0.1:3000` |
+| `PORT` | Internal dev server port | `3000` |
+| `PUBLIC_PORT` | Docker host-mapped port | `3200` |
+| `CANONICAL_URL` | URL the browser hits — **`localhost:3000` locally, `localhost:3200` in Docker** | `http://localhost:3000` |
+| `BETTER_AUTH_URL` | Must match `CANONICAL_URL` exactly | `http://localhost:3000` |
+| `BETTER_AUTH_INTERNAL_URL` | Server-to-server auth URL (always the internal port) | `http://127.0.0.1:3000` |
 | `BETTER_AUTH_SECRET` | Secret key for auth signing | any random string |
-| `POSTGRES_HOST` | PostgreSQL host | `localhost` |
-| `POSTGRES_PORT` | PostgreSQL port (internal) | `5432` |
+| `POSTGRES_HOST` | **`localhost` locally, `db` inside Docker Compose** | `localhost` |
+| `POSTGRES_PORT` | PostgreSQL internal port | `5432` |
+| `POSTGRES_HOST_PORT` | PostgreSQL Docker host-mapped port | `5433` |
 | `POSTGRES_USER` | Database username | `root` |
 | `POSTGRES_PASSWORD` | Database password | `password` |
 | `POSTGRES_DB` | Database name | `doc-editor` |
 
-See `.env.example` for the full list including Docker-specific variables.
-
----
-
-## Running Locally (Docker — Recommended)
-
-```bash
-pnpm run docker:dev
-```
-
-This builds the image, pushes the schema, and starts the dev server with hot reload.
+See `.env.example` for the full list.
 
 ---
 

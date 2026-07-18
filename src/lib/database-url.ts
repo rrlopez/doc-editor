@@ -12,7 +12,12 @@ export function buildPostgresUrl(fallback?: string): string {
   }
 
   const host = process.env['POSTGRES_HOST'] ?? 'localhost'
-  const port = host === 'db' ? (process.env['POSTGRES_PORT'] ?? '5432') : (process.env['POSTGRES_HOST_PORT'] ?? process.env['POSTGRES_PORT'] ?? '5432')
+  // Inside Docker Compose the service name resolves on the internal port (5432).
+  // Outside Docker (local dev) the container is mapped to POSTGRES_HOST_PORT (default 5433).
+  const isDockerHost = host === 'db' || host === 'postgres'
+  const port = isDockerHost
+    ? (process.env['POSTGRES_PORT'] ?? '5432')
+    : (process.env['POSTGRES_HOST_PORT'] ?? process.env['POSTGRES_PORT'] ?? '5432')
 
   return `postgresql://${encodeCredential(user)}:${encodeCredential(password)}@${host}:${port}/${database}?schema=public`
 }
