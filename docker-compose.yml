@@ -38,7 +38,7 @@ services:
       db-init:
         condition: service_completed_successfully
     ports:
-      - '${PUBLIC_PORT:-3100}:${PORT:-3000}'
+      - '${PUBLIC_PORT:-3200}:${PORT:-3000}'
       - '51212:51212'
     env_file:
       - .env

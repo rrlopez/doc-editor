@@ -74,16 +74,18 @@ const proseClassName = clsx(
 function RouteComponent() {
   const { documentId } = Route.useParams()
   const isNew = documentId === 'create'
-  const { data } = fetchOneDocument(isNew ? null : documentId)
+  const { data, isReady } = fetchOneDocument(isNew ? null : documentId)
   const document = data?.[0] as feDocument | undefined
 
   const user = useStore(authStore, s => s.user)
   const navigate = useNavigate()
 
-  const [title, setTitle] = useState(document?.title ?? 'Untitled document')
+  const [title, setTitle] = useState('Untitled document')
   const [editingTitle, setEditingTitle] = useState(false)
   const [saving, setSaving] = useState(false)
   const [savedId, setSavedId] = useState<string | null>(isNew ? null : documentId)
+  // Track whether we've hydrated from the live query yet
+  const [hydrated, setHydrated] = useState(false)
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -93,14 +95,30 @@ function RouteComponent() {
       Placeholder.configure({ placeholder: 'Start writing…' }),
       CharacterCount,
     ],
-    // Prisma types content as Json (broad); cast to string so Tiptap always gets
-    // a defined value. Tiptap treats an empty string as a blank document.
-    // biome-ignore lint/suspicious/noExplicitAny: Prisma Json vs Tiptap Content mismatch
-    content: (document?.content ?? '') as any,
+    content: '',
     editorProps: {
       attributes: { class: proseClassName },
     },
   })
+
+  // Once the live query resolves and we have real document data, hydrate the
+  // editor and title. This runs once — `hydrated` prevents overwriting edits
+  // the user has made after the initial load.
+  useEffect(() => {
+    if (hydrated || !isReady) return
+    if (isNew) {
+      setHydrated(true)
+      return
+    }
+    if (!document) return
+
+    setTitle(document.title ?? 'Untitled document')
+    if (editor && document.content) {
+      // biome-ignore lint/suspicious/noExplicitAny: Prisma Json vs Tiptap Content mismatch
+      editor.commands.setContent(document.content as any)
+    }
+    setHydrated(true)
+  }, [isReady, document, editor, isNew, hydrated])
 
   const handleSave = useCallback(async () => {
     if (!editor) return
@@ -247,7 +265,7 @@ function RouteComponent() {
             <span
               aria-hidden
               className='absolute inset-y-0 left-0 w-1 rounded-l-sm'
-              style={{ background: isOwned ? 'var(--primary)' : 'oklch(0.55 0.14 160)' }}
+              style={{ background: isOwned ? 'var(--primary)' : 'oklch(0.60 0.13 30)' }}
             />
             <EditorContent editor={editor} />
           </div>
