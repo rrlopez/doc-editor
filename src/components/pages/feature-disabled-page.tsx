@@ -1,11 +1,9 @@
+// Remove unused import — user.landingPage no longer referenced
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useStore } from '@tanstack/react-store'
 import { ShieldAlertIcon } from 'lucide-react'
 import { useEffect } from 'react'
-import { authStore } from '@/store/auth-store'
 
 export function FeatureDisabledPage() {
-  const user = useStore(authStore, state => state.user)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -22,7 +20,7 @@ export function FeatureDisabledPage() {
         This module is currently turned off in your system configurations. Please contact your administrator to enable it.
       </p>
       <Link
-        to={user.landingPage}
+        to='/docs'
         className='mt-6 inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/95'
       >
         Return to Dashboard

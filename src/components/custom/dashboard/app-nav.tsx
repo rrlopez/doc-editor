@@ -20,7 +20,7 @@ function AppNav() {
           </div>
           <div>
             <div className='font-bold text-sm tracking-tight text-foreground leading-none'>{APP_NAME}</div>
-            <span className='text-[9px] font-mono tracking-widest text-muted-foreground uppercase font-semibold block mt-0.5'>{user.role || 'Guest'}</span>
+            <span className='text-[9px] font-mono tracking-widest text-muted-foreground uppercase font-semibold block mt-0.5'>{user.email ?? 'Guest'}</span>
           </div>
         </div>
         <Separator orientation='vertical' className='mr-2 ' />

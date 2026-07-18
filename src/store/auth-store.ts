@@ -39,7 +39,7 @@ export const userNeedsHotline = (user: ServerUser | undefined): boolean => {
 }
 
 export const resetAuth = () => {
-  authStore.setState(defaultValue)
+  authStore.setState(() => defaultValue)
 }
 
 export const setUser = (user: ServerUser) => {

@@ -57,7 +57,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       team: {
         name: APP_NAME,
         logo: <GalleryVerticalEndIcon />,
-        plan: user.role || 'Guest',
+        plan: user.email ?? 'Guest',
       },
       items: [
         {

@@ -5,7 +5,7 @@ import { auth } from './auth'
 import { authMiddleware } from './auth-middleware'
 
 // Derive core entity payloads directly from Prisma Client models
-type DBUser = Prisma.UserGetPayload<{ select: { id: true; firstName: true; lastName: true; nickName: true; email: true; image: true; role: true } }>
+type DBUser = Prisma.UserGetPayload<{ select: { id: true; firstName: true; lastName: true; nickName: true; email: true; image: true } }>
 
 export const getAuthUser = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])

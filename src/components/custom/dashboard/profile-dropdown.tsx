@@ -57,7 +57,7 @@ export const ProfileDropdown = ({ children }: { children?: ReactNode }) => {
               </Badge>
             </div>
             <span className='text-[11px] text-muted-foreground font-medium'>
-              {user.role} • {user.email}
+              {user.email}
             </span>
           </div>
         </div>
