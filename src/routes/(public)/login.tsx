@@ -1,6 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Activity, Loader2, ShieldAlert } from 'lucide-react'
+import { FileText, Loader2, ShieldAlert } from 'lucide-react'
 import { useEffect } from 'react'
 import z from 'zod'
 import { Form } from '@/components/custom/form'
@@ -51,8 +51,8 @@ function RouteComponent() {
       {/* TOP HEADER SECTION: Tightened margins, perfectly leveled top bar */}
       <header className='w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between z-30 shrink-0 border-b border-border/10'>
         <div className='flex items-center gap-2.5'>
-          <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/30 text-primary shadow-[0_0_12px_rgba(59,130,246,0.15)]'>
-            <Activity className='h-4.5 w-4.5' />
+          <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 border border-primary/25 text-primary shadow-[0_0_10px_color-mix(in_oklch,var(--primary)_30%,transparent)]'>
+            <FileText className='h-4 w-4' />
           </div>
           <div>
             <div className='font-bold text-sm tracking-tight text-foreground leading-none'>{APP_NAME}</div>
@@ -80,8 +80,8 @@ function RouteComponent() {
             <h1 className='text-2xl font-extrabold tracking-tight text-foreground'>Sign In</h1>
             <p className='text-xs text-muted-foreground leading-relaxed max-w-[320px] mx-auto'>
               {isOnline
-                ? 'Authenticate your operator node to initialize the real-time intake workspace.'
-                : 'Local hardware authentication active. Sync will resume automatically.'}
+                ? 'Sign in to access your documents.'
+                : 'Local authentication active. Changes will sync when you reconnect.'}
             </p>
           </div>
 
@@ -125,10 +125,10 @@ function RouteComponent() {
                   {isSubmitting ? (
                     <div className='flex items-center gap-2 justify-center'>
                       <Loader2 className='w-3.5 h-3.5 animate-spin' />
-                      <span>Opening Substation Uplink...</span>
+                      <span>Signing in…</span>
                     </div>
                   ) : (
-                    'Initialize Access'
+                    'Sign In'
                   )}
                 </Button>
               )}
@@ -139,7 +139,7 @@ function RouteComponent() {
 
       {/* FOOTER SECTION: Perfectly centered at bottom */}
       <footer className='w-full py-4 text-center text-[10px] font-mono text-zinc-500 dark:text-zinc-600 tracking-wider z-30 shrink-0 border-t border-border/10'>
-        DOC EDITOR PORTAL v0.0.1 • All Rights Reserved
+        FOLIO v0.1.0 • All Rights Reserved
       </footer>
     </div>
   )
