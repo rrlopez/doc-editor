@@ -10,9 +10,9 @@
 
 | Item | Link |
 |---|---|
-| Live Demo | `[PLACEHOLDER — add deployment URL]` |
+| Live Demo | https://doc-editor-sage.vercel.app |
 | Source Code | https://github.com/rrlopez/doc-editor |
-| Walkthrough Video | `[PLACEHOLDER — add video URL]` |
+| Walkthrough Video | https://www.loom.com/share/16362b6c1b5549d4b1d6dbd03ce94865 |
 
 ---
 
