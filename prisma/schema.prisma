@@ -1,0 +1,94 @@
+// --- PRISMA CONFIG ---
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String  @id @default(cuid())
+  firstName String?
+  lastName  String?
+  nickName  String?
+  email     String  @unique
+  image     String?
+
+  sessions Session[]
+  accounts Account[]
+
+  ownedDocuments  Document[]      @relation("OwnedDocuments")
+  sharedDocuments DocumentShare[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([deletedAt])
+  @@map("users")
+}
+
+// --- AUTH SYSTEM ---
+
+// Need for better auth management, but can be extended for other purposes like tracking user sessions, devices, etc.
+model Session {
+  id              String   @id @default(cuid())
+  expiresAt       DateTime
+  token           String   @unique
+  ipAddress       String?
+  userAgent       String?
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedHotline String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+// Need for better auth management, but can be extended for other purposes like tracking user accounts, providers, etc.
+model Account {
+  id         String  @id @default(cuid())
+  accountId  String
+  providerId String
+  userId     String
+  password   String?
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("accounts")
+}
+
+model Document {
+  id String @id @default(cuid())
+
+  title   String
+  content Json // Tiptap JSON
+
+  ownerId String
+  owner   User   @relation("OwnedDocuments", fields: [ownerId], references: [id])
+
+  shares DocumentShare[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DocumentShare {
+  id         String @id @default(cuid())
+  documentId String
+  userId     String
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([documentId, userId])
+}

@@ -1,0 +1,15 @@
+node_modules
+.output
+.git
+.next
+dist
+coverage
+test-results
+playwright-report
+*.log
+.env
+.env.*
+!.env.example
+.vscode
+.cursor
+agent-transcripts

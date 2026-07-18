@@ -1,0 +1,4 @@
+user_id,user_email,user_first_name,user_last_name,user_nickname,user_image
+user-alice,alice@doc-editor.com,Alice,Johnson,Alice,https://api.dicebear.com/7.x/avataaars/svg?seed=Alice
+user-bob,bob@doc-editor.com,Bob,Smith,Bob,https://api.dicebear.com/7.x/avataaars/svg?seed=Bob
+user-charlie,charlie@doc-editor.com,Charlie,Brown,Charlie,https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie
